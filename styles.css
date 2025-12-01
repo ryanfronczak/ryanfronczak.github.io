@@ -69,5 +69,6 @@ h2 {
     margin: 12px auto;
     border-radius: 10px;
 
-    flex-shrink: 0; /* keep the image centered but not stretching*/
+    max-height: 300px;
+    object-fit: contain;
 }
