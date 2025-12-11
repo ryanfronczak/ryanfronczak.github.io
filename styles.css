@@ -2,7 +2,9 @@ body {
     background: #f4f4f4;
     font-family: Arial, Helvetica, sans-serif;
     margin: 18px;
+    transition: background 0.8s ease; /* smooth gradient transition */
 }
+
 
 p {
     color: #2e2e2e;
@@ -23,52 +25,202 @@ h2 {
     font-weight: bold;
 }
 
+
 .projects-title h2 {
     text-align: center;
     margin-bottom: 20px;
 }
 
+/* ============================================================
+   FIXED SCROLLING + CENTERING VERSION OF .projects
+   ============================================================ */
+/* ---------- REPLACE .projects RULES WITH THIS ---------- */
 .projects {
+    box-sizing: border-box;
+    width: 100%;
+
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
     gap: 20px;
+
+    /* Horizontal scroll snapping */
+    scroll-snap-type: x proximity;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+
+    /* Vertically center cards */
+    height: 100vh;              /* full viewport height */
+    align-items: center;         /* vertically centers cards */
+    
+    /* Optional side padding (first/last card centering) */
+    padding-left: calc(50vw - 160px);
+    padding-right: calc(50vw - 160px);
+
+    /* Hide scrollbars */
+    scrollbar-width: none;
+}
+.projects::-webkit-scrollbar {
+    display: none !important;
 }
 
+
+/* ============================================================
+   CARD STYLES
+   ============================================================ */
 .project {
-    width: 300px;
-    padding: 20px 10px;
+    scroll-snap-align: center;
+    flex: 0 0 800px;
+    flex-shrink: 0;
+    height: 600px;
     background: white;
     border-radius: 12px;
+    padding: 20px 10px;
     text-align: center;
-
     display: flex;
     flex-direction: column;
-    justify-content: space-between;  /* space between top and bottom */
-    height: 480px; /* set a consistent height of the cards */
+    justify-content: space-between;
+    transition: transform 0.4s ease, z-index 0.4s ease, box-shadow 0.4s ease;
+    border-radius: 10%;
+
+    transform: scale(0.7);
+    opacity: 0.6;
+    position: relative;
+    z-index: 1;
+
+    /* enable overlap with neighbors */
+    margin-left: -100px;   /* tweak this to control overlap */
+    margin-right: -100px;
 }
 
+
+
+/* active center card */
+.project.active {
+    transform: scale(1);       /* full size */
+    opacity: 1;
+    z-index: 10;               /* on top of neighbors */
+    box-shadow: 0px 10px 30px rgba(0,0,0,0.25); /* optional shadow to pop */
+}
+
+/* slightly lift left/right neighbors with translation (optional) */
+.project.active ~ .project,
+.project.active ~ .project ~ .project {
+    transform: scale(0.7);     /* already handled in default */
+    opacity: 0.6;
+    z-index: 1;
+}
+
+
+
+/* Profile card adjustments */
+.project.profile-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* image at top, text at bottom */
+    align-items: center;
+    padding: 20px;
+}
+
+.project.profile-card img.profile-pic {
+    width: 90%;       /* leave 20px padding on sides */
+    max-height: 600px; /* leave ~100px for name + text at bottom */
+    border-radius: 25%;
+    object-fit: cover;
+    aspect-ratio: 1;
+}
+
+.project.profile-card .profile-content {
+    width: 100%;
+    text-align: center;
+}
+
+
+.project.profile-card .profile-content h3 {
+    font-size: 36px;
+    margin: 10px 0 5px;
+}
+
+.project.profile-card .profile-content p {
+    font-size: 18px;
+    margin: 0 0 20px;
+}
+
+
 .project h3 {
-    font-size: 22px;
+    font-size: 36px;     /* reduce from 80px for profile card, looks better */
+    color: #733635;
     margin-bottom: 10px;
-    color: #2e2e2e;
-    font-weight: bold;
 }
 
 .project p {
-    margin-top: auto; /*pushes text to bottom*/
     font-size: 18px;
     color: #3a3a3a;
 }
 
+
 .project img {
     width: 100%;
-    max-width: 250px;
+    max-width: 65%;
     height: auto;
     display: block;
     margin: 12px auto;
     border-radius: 10px;
-
-    max-height: 300px;
+    max-height: 600px;
     object-fit: contain;
 }
+
+/* enlarged active card */
+.project.active {
+    transform: scale(1);
+    opacity: 1;
+    z-index: 10;
+}
+
+.project.active img {
+    max-height: 600px;
+}
+
+.project.about-card .profile-content p {
+    font-size: 18px;
+    margin: 10px 0 20px;
+    max-width: 500px;
+    color: #3a3a3a;
+}
+
+.project.about-card .social-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.project.about-card .social-buttons .profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 10%;
+    object-fit: contain;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.project.about-card .social-buttons .profile-pic:hover {
+    transform: scale(1.1);
+}
+
+.project.about-card .resume-button .download-resume {
+    display: inline-block;
+    background-color: #733635;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.project.about-card .resume-button .download-resume:hover {
+    background-color: #a05344;
+}
+
