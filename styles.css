@@ -29,6 +29,10 @@ h2 {
     margin-bottom: 20px;
 }
 
+.label {
+    font-weight: 750;
+}
+
 /* ============================================================
 FIXED SCROLLING + CENTERING VERSION OF .projects
 ============================================================ */
@@ -66,7 +70,7 @@ CARD STYLES
     flex: 0 0 800px;
     flex-shrink: 0;
     height: 600px;
-    background: white;
+    background: #f5f5f7;;
     border-radius: 12px;
     padding: 20px 10px;
     text-align: center;
@@ -83,6 +87,11 @@ CARD STYLES
     
     margin-left: -100px;
     margin-right: -100px;
+}
+
+.project:hover {
+    transform: translateY(-6px);
+    box-shadow: 0px 12px 32px rgba(0,0,0,0.18);
 }
 
 .project.active {
