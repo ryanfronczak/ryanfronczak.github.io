@@ -26,7 +26,7 @@
             <!-- About Me Card -->
             <section class="project profile-card about-card">
                 <!-- Hidden image for JS (required by ColorThief) -->
-                <img src="images/pythonLogo.png" alt="" class="profile-pic" style="display:none;">
+                <img src="images/picture.png" alt="" class="profile-pic" style="display:none;">
                 
                 <div class="profile-content">
                     <h3>About Me</h3>
@@ -59,6 +59,60 @@
                 <h3>Education</h3>
                 <img src="images/VictorGym.jpg" alt="Darla Moore at UofSC" class="profile-pic">
             </section>
+            
+            
+            
+            
+            <section class="project experience-card">
+                <img src="images/ExperienceCardImage.png" alt="" class="profile-pic" style="display:none;">
+                <!-- Experience Images -->
+                <div class="exp-images">
+                    <img src="images/CarolinaFundLogo.png" alt="Carolina Fund" class="exp-img exp-img1">
+                    <img src="images/CFIALogo.png" alt="CFIA" class="exp-img exp-img2">
+                    <img src="images/RavenwoodLogo.png" alt="Ravenwood" class="exp-img exp-img3">
+                    <img src="images/RCSLogo.png" alt="RCS" class="exp-img exp-img4">
+                </div>
+                
+                
+                <div class="experience-wrapper">
+                    <section class="exp-circle exp1">
+                        <div class="exp-content">
+                            <h3><span class="job1">Analyst</span> <span class="job2">The Carolina Fund</span></h3>
+                            <p>Some description here.</p>
+                        </div>
+                    </section>
+                    
+                    <section class="exp-circle exp2">
+                        <div class="exp-content">
+                            <h3><span class="job1">Freshman Finance Academy Member</span> <span class="job2">Carolina Investment & Finance Association</span></h3>
+                            <p>Selected as one of the top 28 freshmen to participate in a highly competitive, advanced, student-run financial careers program, obtaining early and valuable exposure to the finance industry.</p>
+                            <p>7-week training program covering financial markets, accounting fundamentals, financial statement analysis, and valuation through interactive workshops and various professional deliverables.</p>
+                        </div>
+                    </section>
+                    
+                    <section class="exp-circle exp3">
+                        <div class="exp-content">
+                            <h3><span class="job1">Outdoor Attendant</span> <span class="job2">Ravenwood Golf Club</span></h3>
+                            <p>Provide customer service to 200+ golfers per shift by greeting guests, assisting with golf bags, managing cart operations, and maintaining an organized driving range and staging area for a high-traffic golf facility.</p>
+                            <p>Support course operations by monitoring pace of play across 50+ active groups, coordinating tee times, answering phone inquiries, and assisting with check-in and checkout to ensure a seamless guest experience.</p>
+                        </div>
+                    </section>
+                    
+                    <section class="exp-circle exp4">
+                        <div class="exp-content">
+                            <h3><span class="job1">Warehouse Assistant</span> <span class="job2">Rochester College Storage</span></h3>
+                            <p>Streamline warehouse operations by receiving, organizing, and tracking storage items for 500+ college students annually, maintaining inventory for 3,500+ boxes, and ensuring efficient workflow between May and August.</p>
+                            <p>Support logistics and delivery by preparing packing materials, coordinating pick-ups and drop-offs at local colleges, and collaborating with team members to load and unload multiple truckloads daily.</p>
+                        </div>
+                    </section>
+                </div>
+                
+                <!-- The visible main card content -->
+                <h3>Experience</h3>
+            </section>
+            
+            
+            
             
             <!-- Java Workout Tracker -->
             <section class="project">
@@ -103,6 +157,9 @@
         </div>
         
         
+        
+        
+        
         <script>
             window.addEventListener('load', () => {
                 const container = document.querySelector('.projects');
@@ -136,8 +193,11 @@
                         ]);
                     }
                 });
-                const educationCard = document.querySelector('.education-card');
+                const experienceCard = document.querySelector('.experience-card');
+                const experienceWrapper = document.querySelector('.experience-wrapper');
                 const subcardsWrapper = document.querySelector('.subcards-wrapper');
+                const educationCard = document.querySelector('.education-card');
+                
                 
                 function updateSubcardsVisibility() {
                     const containerRect = container.getBoundingClientRect();
@@ -168,6 +228,34 @@
                         }
                     });
                 }
+                
+                function updateExperienceVisibility() {
+                    const expCard = document.querySelector('.experience-card');
+                    const expWrapper = document.querySelector('.experience-wrapper');
+                    if (!expCard || !expWrapper) return;
+                    
+                    const containerRect = container.getBoundingClientRect();
+                    const centerX = containerRect.left + containerRect.width / 2;
+                    
+                    const expRect = expCard.getBoundingClientRect();
+                    const expCenter = expRect.left + expRect.width / 2;
+                    
+                    const dist = Math.abs(centerX - expCenter);
+                    const maxDist = 200;
+                    
+                    let opacity = 1 - dist / maxDist;
+                    opacity = Math.max(0, Math.min(1, opacity));
+                    
+                    expWrapper.style.opacity = opacity;
+                    expWrapper.style.transform =
+                    `translate(-50%, -50%) scale(${0.3 + opacity * 0.7})`;
+                    
+                    expWrapper.querySelectorAll('.exp-circle').forEach(c => {
+                        if (opacity > 0) c.classList.add('active');
+                        else c.classList.remove('active');
+                    });
+                }
+                
                 
                 
                 function updateActiveCard() {
@@ -249,6 +337,7 @@
                         window.requestAnimationFrame(() => {
                             updateActiveCard();
                             updateBackground();
+                            updateExperienceVisibility();
                             ticking = false;
                         });
                         ticking = true;
@@ -257,10 +346,21 @@
                 
                 updateActiveCard();
                 updateBackground();
+                updateExperienceVisibility();
                 window.addEventListener('resize', () => {
                     updateActiveCard();
                     updateBackground();
+                    updateExperienceVisibility();
                 });
+                // Center the first card on page load
+                const firstCard = cards[0];
+                if(firstCard){
+                    const containerRect = container.getBoundingClientRect();
+                    const cardRect = firstCard.getBoundingClientRect();
+                    const scrollOffset = (cardRect.left + cardRect.width / 2) - (containerRect.left + containerRect.width / 2);
+                    container.scrollLeft += scrollOffset;
+                }
+                
             });
         </script>
     </body>
